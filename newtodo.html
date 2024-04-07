@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Todo List</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 20px auto;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .input-container {
+      display: flex;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    #todoInput {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 5px 0 0 5px;
+    }
+
+    #addBtn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 0 5px 5px 0;
+      background-color: #4CAF50;
+      color: #fff;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    #addBtn:hover {
+      background-color: #45a049;
+    }
+
+    .todo-list {
+      width: 100%;
+    }
+
+    .todo-item {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      transition: background-color 0.3s ease;
+    }
+
+    .todo-item:last-child {
+      border-bottom: none;
+    }
+
+    .todo-item:hover {
+      background-color: #f9f9f9;
+    }
+
+    .todo-item input[type="checkbox"] {
+      margin-right: 10px;
+    }
+
+    .delete-btn {
+      background-color: transparent;
+      color: #ff4d4d;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      transition: color 0.3s ease;
+    }
+
+    .delete-btn:hover {
+      color: #ff1a1a;
+    }
+
+    .checked {
+      text-decoration: line-through;
+      color: #888;
+    }
+
+    .total {
+      text-align: center;
+      margin-top: 20px;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Todo List</h1>
+  <div class="input-container">
+    <input type="text" id="todoInput" placeholder="Add a new todo">
+    <button id="addBtn">Add</button>
+  </div>
+  <div class="todo-list" id="todoList"></div>
+  <div class="total" id="total"></div>
+</div>
+
+<script>
+  const todoInput = document.getElementById('todoInput');
+  const addBtn = document.getElementById('addBtn');
+  const todoList = document.getElementById('todoList');
+  const total = document.getElementById('total');
+
+  let taskId = 0;
+
+  addBtn.addEventListener('click', () => {
+    const todoText = todoInput.value.trim();
+    if (todoText !== '') {
+      const task = createTask(todoText);
+      todoList.appendChild(task);
+      updateTotal();
+      todoInput.value = '';
+    }
+  });
+
+  function createTask(text) {
+    const task = document.createElement('div');
+    task.classList.add('todo-item');
+    task.dataset.id = taskId++;
+
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.addEventListener('change', () => {
+      task.classList.toggle('checked', checkbox.checked);
+      updateTotal();
+    });
+
+    const todoText = document.createElement('span');
+    todoText.textContent = text;
+
+    const deleteBtn = document.createElement('button');
+    deleteBtn.textContent = '❌';
+    deleteBtn.classList.add('delete-btn');
+    deleteBtn.addEventListener('click', () => {
+      task.remove();
+      updateTotal();
+    });
+
+    task.appendChild(checkbox);
+    task.appendChild(todoText);
+    task.appendChild(deleteBtn);
+
+    return task;
+  }
+
+  function updateTotal() {
+    const totalTasks = document.querySelectorAll('.todo-item').length;
+    total.textContent = `Total: ${totalTasks}`;
+  }
+</script>
+
+</body>
+</html>
