@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= project.name %></title>
+</head>
+<body>
+  <h1><%= project.name %></h1>
+  <p><%= project.description %></p>
+  <p>Author: <%= project.author %></p>
+  <h2>Issues</h2>
+  <a href="/projects/<%= project._id %>/issues/new">Create New Issue</a>
+
+  <form method="GET" action="/projects/<%= project._id %>">
+    <label for="label">Filter by Labels (comma separated):</label>
+    <input type="text" name="label" value="<%= label %>"><br>
+    <label for="author">Filter by Author:</label>
+    <input type="text" name="author" value="<%= author %>"><br>
+    <label for="search">Search:</label>
+    <input type="text" name="search" value="<%= search %>"><br>
+    <button type="submit">Filter/Search</button>
+  </form>
+
+  <ul>
+    <% issues.forEach(issue => { %>
+      <li>
+        <h3><%= issue.title %></h3>
+        <p><%= issue.description %></p>
+        <p>Author: <%= issue.author %></p>
+        <p>Labels: <%= issue.labels.join(', ') %></p>
+      </li>
+    <% }) %>
+  </ul>
+</body>
+</html>
